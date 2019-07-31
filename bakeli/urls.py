@@ -17,12 +17,20 @@ from django.contrib import admin
 from django.conf.urls import url,include
 from django.urls import path
 from rest_framework_jwt.views import obtain_jwt_token
-from gestcom.views import *
 from rest_framework import routers
 from gestcom.views import UserViewSet
+from gestcom.views import *
+
+
+
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
+router = routers.DefaultRouter()
+router.register(r'clients', ClientsViewSet)
+router.register(r'lunette', LunetteViewSet)
+router.register(r'commande', CommandeViewSet)
+
 
 
 urlpatterns = [

@@ -1,6 +1,30 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
+from .models import *
+
+
+
+
+class ClientsSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Clients
+        fields = ('nom', 'prenom', 'adresse', 'telephone','photo')
+
+
+
+
+class LunetteSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Lunette
+        fields = ('types','photo')
+
+
+
+class CommandeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Commandes
+        fields = ('date_add', 'clients', 'lunette')
 
 
 class TokenSerializer(serializers.Serializer):
@@ -27,14 +51,9 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     prenom = serializers.CharField()
     nom = serializers.CharField()
 
-    
 
     class Meta:
         model = User
         fields = ('prenom','nom','username', 'email', 'password','confirmPassword')
 
-class UserProfileSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = User
-        fields = ('prenom', 'nom', 'username', 'password', 'confirmPassword')
+

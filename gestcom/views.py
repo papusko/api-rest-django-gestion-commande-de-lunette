@@ -1,15 +1,24 @@
 from django.shortcuts import render
+from rest_framework.renderers import JSONRenderer
+from rest_framework.renderers import TemplateHTMLRenderer
 from django.contrib.auth import authenticate, login
 from rest_framework_jwt.settings import api_settings
 from rest_framework import permissions
 from rest_framework import generics
 from django.contrib.auth.models import User
-from .serializers import TokenSerializer, UserSerializer, UserRegisterSerializer
+from .serializers import *
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.views import status
 from rest_framework_jwt.settings import api_settings
 from django.core.validators import validate_email
 from rest_framework import viewsets
+from .models import Clients
+from django.db import models
+from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 
 # Get the JWT settings, add these lines after the import/from lines
@@ -28,6 +37,7 @@ class LoginView(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)
 
     queryset = User.objects.all()
+
 
     def post(self, request, *args, **kwargs):
         username = request.data.get("username", "")
@@ -65,9 +75,7 @@ class RegisterUsers(generics.CreateAPIView):
         confirmPassword = request.data.get("confirmPassword", "")
 
 
-        lookup_field= 'email'
-        lookup_url_kwargs = 'email'
-        lookup_value_regex = '[\w@.]+'
+        
 
         #verification des champs tout les champs sont obligatoire
         if not username or not password or not email or not prenom or not nom or not confirmPassword:
@@ -94,15 +102,54 @@ class RegisterUsers(generics.CreateAPIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         new_user = User.objects.create_user(
-            username=username, password=password, email=email
+            prenom =prenom, nom=nom, username=username, password=password, email=email
         )
+        new_user.save()
+        return new_user
         return Response(status=status.HTTP_201_CREATED)
 
 
 
 class UserViewSet(viewsets.ModelViewSet):
-	
+    	
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
-# Create your views here.
+
+
+class ClientsView(generics.CreateAPIView):
+
+
+    queryset = Clients.objects.all()
+    serializer_class = ClientsSerializer
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request):
+        serializer = ClientsSerializer()
+        return Response({'serializer': serializer})
+
+
+
+
+class ClientsViewSet(viewsets.ModelViewSet):
+
+    queryset = Clients.objects.all()
+    serializer_class = ClientsSerializer
+    permission_classes = (permissions.AllowAny,)
+
+
+
+
+class LunetteViewSet(viewsets.ModelViewSet):
+
+    queryset = Lunette.objects.all()
+    serializer_class = LunetteSerializer
+    permission_classes = (permissions.AllowAny,)
+
+
+class CommandeViewSet(viewsets.ModelViewSet):
+
+    queryset = Commandes.objects.all()
+    serializer_class = CommandeSerializer
+    permission_classes = (permissions.AllowAny,)
+

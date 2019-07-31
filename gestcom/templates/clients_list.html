@@ -1,0 +1,11 @@
+<html><body>
+<h1>Clients</h1>
+<ul>
+    {% for clients in clients %}
+    <li>{{ clients.prenom }}</li>
+    <li>{{ clients.nom }}</li>
+    <li>{{ clients.adresse }}</li>
+    <li>{{ clients.telephone }}</li>
+    {% endfor %}
+</ul>
+</body></html>
