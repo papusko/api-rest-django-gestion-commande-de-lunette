@@ -9,12 +9,14 @@ from .models import *
 class ClientsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Clients
-        fields = ('nom', 'prenom', 'adresse', 'telephone','photo')
+        fields = ('nom', 'prenom', 'adresse', 'telephone')
 
 
 
 
 class LunetteSerializer(serializers.HyperlinkedModelSerializer):
+
+    photo  = serializers.ImageField(max_length= None, use_url=True, allow_null=True, required=False)
     class Meta:
         model = Lunette
         fields = ('types','photo')

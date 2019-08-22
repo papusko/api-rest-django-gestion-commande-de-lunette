@@ -20,6 +20,8 @@ from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework import routers
 from gestcom.views import UserViewSet
 from gestcom.views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 
@@ -38,5 +40,4 @@ urlpatterns = [
     path('api-token-auth/', obtain_jwt_token, name='create-token'),
     path('api/',include('gestcom.urls')),
     url(r'^api/', include(router.urls)),
-]
-
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

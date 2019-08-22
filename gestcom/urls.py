@@ -9,7 +9,5 @@ from .models import *
 
 urlpatterns = [
     path('auth/login/', LoginView.as_view(), name="auth-login"),
-    path('auth/register/', RegisterUsers.as_view(), name="auth-register"),
-    path('clients/detail/', ClientsView.as_view(), name="clients-detail"),
-    path('clients/ajouter/', ClientsView.as_view(), name="clients-ajouter")
+    path('auth/register/', RegisterUsers.as_view(), name="auth-register")
     ]
